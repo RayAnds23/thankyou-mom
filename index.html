@@ -65,6 +65,37 @@
         .heart-animate {
             animation: heartbeat 0.4s ease-in-out;
         }
+        
+        /* Tooltip animation */
+        .tooltip {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            transform: translateY(10px) translateX(-50%);
+        }
+        .tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) translateX(-50%);
+        }
+        
+        /* Long press indicator */
+        .press-indicator {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(107, 155, 107, 0.3);
+            transform: scale(0);
+            pointer-events: none;
+        }
+        .press-indicator.active {
+            animation: ripple 0.8s ease-out;
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-warm-50 text-warm-900 font-sans antialiased">
@@ -105,12 +136,30 @@
                          alt="Mary Jane Andrada Portrait" 
                          class="w-full h-full object-cover">
                 </div>
-                <!-- Heart Button - Fixed -->
-                <button id="heartBtn" class="absolute -bottom-2 -right-2 bg-sage-500 text-white p-3 rounded-full shadow-lg hover:bg-sage-600 hover:scale-110 transition-all duration-300 cursor-pointer z-10" aria-label="Send love">
-                    <svg class="w-6 h-6 pointer-events-none" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                </button>
+                
+                <!-- Heart Button with Hover Tooltip and Long Press -->
+                <div class="absolute -bottom-2 -right-2 z-10">
+                    <!-- Tooltip -->
+                    <div id="heartTooltip" class="tooltip absolute bottom-full left-1/2 mb-2 px-3 py-1 bg-warm-900 text-white text-xs rounded-full whitespace-nowrap shadow-lg">
+                        Send love ❤️
+                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-warm-900"></div>
+                    </div>
+                    
+                    <!-- Press Indicator for Long Press -->
+                    <div id="pressIndicator" class="press-indicator w-full h-full absolute inset-0"></div>
+                    
+                    <!-- Heart Button -->
+                    <button id="heartBtn" class="relative bg-sage-500 text-white p-3 rounded-full shadow-lg hover:bg-sage-600 hover:scale-110 transition-all duration-300 cursor-pointer" aria-label="Send love">
+                        <svg class="w-6 h-6 pointer-events-none" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Mobile Hint -->
+                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap sm:hidden">
+                        <span class="text-xs text-sage-600 font-medium bg-white/80 px-2 py-1 rounded-full shadow-sm">Hold for love</span>
+                    </div>
+                </div>
             </div>
             <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-warm-900 mb-6 leading-tight">
                 Hi, I'm Mary Jane<br class="hidden sm:block"> Andrada
@@ -342,7 +391,6 @@
                 Always.
 
                 — Your son 💕</p>
-                
                 <button onclick="closeLoveModal()" class="w-full py-3 bg-sage-600 text-white font-medium rounded-full hover:bg-sage-700 transition-colors">
                     Close
                 </button>
@@ -394,7 +442,7 @@
             document.body.classList.remove('modal-open');
         }
 
-        // Love Popup Functions - Fixed
+        // Love Popup Functions
         function showLove() {
             const modal = document.getElementById('loveModal');
             const heartBtn = document.getElementById('heartBtn');
@@ -403,7 +451,7 @@
             heartBtn.classList.add('heart-animate');
             setTimeout(() => heartBtn.classList.remove('heart-animate'), 400);
             
-            // Show modal using flex
+            // Show modal
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.body.classList.add('modal-open');
@@ -416,13 +464,77 @@
             document.body.classList.remove('modal-open');
         }
 
-        // Event listener for heart button - This is the key fix!
-        document.getElementById('heartBtn').addEventListener('click', function(e) {
+        // Heart Button Interactions - Hover and Long Press
+        const heartBtn = document.getElementById('heartBtn');
+        const heartTooltip = document.getElementById('heartTooltip');
+        const pressIndicator = document.getElementById('pressIndicator');
+        
+        let pressTimer;
+        let isLongPress = false;
+        const longPressDuration = 600; // milliseconds
+        
+        // Desktop: Hover effects
+        heartBtn.addEventListener('mouseenter', () => {
+            if (!isTouchDevice()) {
+                heartTooltip.classList.add('show');
+            }
+        });
+        
+        heartBtn.addEventListener('mouseleave', () => {
+            if (!isTouchDevice()) {
+                heartTooltip.classList.remove('show');
+            }
+        });
+        
+        // Click handler
+        heartBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            showLove();
+            
+            if (!isLongPress) {
+                showLove();
+            }
+            isLongPress = false;
         });
-
+        
+        // Touch events for long press
+        heartBtn.addEventListener('touchstart', (e) => {
+            isLongPress = false;
+            pressIndicator.classList.add('active');
+            
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                pressIndicator.classList.remove('active');
+                
+                // Vibrate if supported (haptic feedback)
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+                
+                showLove();
+            }, longPressDuration);
+        }, { passive: true });
+        
+        heartBtn.addEventListener('touchend', () => {
+            clearTimeout(pressTimer);
+            pressIndicator.classList.remove('active');
+            
+            // If it wasn't a long press, the click event will fire
+        });
+        
+        heartBtn.addEventListener('touchmove', () => {
+            // Cancel if they move their finger
+            clearTimeout(pressTimer);
+            pressIndicator.classList.remove('active');
+        });
+        
+        // Detect touch device
+        function isTouchDevice() {
+            return (('ontouchstart' in window) ||
+                (navigator.maxTouchPoints > 0) ||
+                (navigator.msMaxTouchPoints > 0));
+        }
+        
         // Close love modal when clicking outside
         document.getElementById('loveModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -453,5 +565,4 @@
         });
     </script>
 </body>
-
 </html>
