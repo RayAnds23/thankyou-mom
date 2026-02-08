@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mary Jane Andrada - Personal Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            200: '#c5d8c5',
+                            300: '#9ebf9e',
+                            500: '#6b9b6b',
+                            700: '#4a6b4a',
+                            900: '#3d523d',
+                        },
+                        warm: {
+                            50: '#faf9f7',
+                            100: '#f0ede8',
+                            800: '#5c4f3d',
+                            900: '#3d3226',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-open {
+            overflow: hidden;
+        }
+        .heart-pop {
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(0.95); }
+            75% { transform: scale(1.05); }
+        }
+        .heart-animate {
+            animation: heartbeat 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-warm-900 font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <span class="font-serif text-xl font-semibold text-sage-700">Mary Jane</span>
+                <div class="hidden sm:flex space-x-8">
+                    <a href="#home" class="text-sm font-medium text-warm-800 hover:text-sage-700 transition-colors">Home</a>
+                    <a href="#about" class="text-sm font-medium text-warm-800 hover:text-sage-700 transition-colors">About</a>
+                    <a href="#gallery" class="text-sm font-medium text-warm-800 hover:text-sage-700 transition-colors">Gallery</a>
+                    <a href="#contact" class="text-sm font-medium text-warm-800 hover:text-sage-700 transition-colors">Contact</a>
+                </div>
+                <button id="mobile-menu-btn" class="sm:hidden p-2 rounded-md text-warm-800 hover:text-sage-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden sm:hidden pb-4 space-y-2">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-warm-800 hover:text-sage-700 hover:bg-sage-50 rounded-md">Home</a>
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-warm-800 hover:text-sage-700 hover:bg-sage-50 rounded-md">About</a>
+                <a href="#gallery" class="block px-3 py-2 text-base font-medium text-warm-800 hover:text-sage-700 hover:bg-sage-50 rounded-md">Gallery</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-warm-800 hover:text-sage-700 hover:bg-sage-50 rounded-md">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-sage-50 to-warm-50">
+        <div class="max-w-4xl mx-auto text-center fade-in">
+            <div class="mb-8 relative inline-block">
+                <div class="w-48 h-48 sm:w-64 sm:h-64 mx-auto rounded-full overflow-hidden shadow-2xl ring-4 ring-white">
+                    <img src="assets\images\515509190_24318051154467295_6726066849140880706_n.jpg" 
+                         alt="Mary Jane Andrada Portrait" 
+                         class="w-full h-full object-cover">
+                </div>
+                <!-- Heart Button - Fixed -->
+                <button id="heartBtn" class="absolute -bottom-2 -right-2 bg-sage-500 text-white p-3 rounded-full shadow-lg hover:bg-sage-600 hover:scale-110 transition-all duration-300 cursor-pointer z-10" aria-label="Send love">
+                    <svg class="w-6 h-6 pointer-events-none" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </button>
+            </div>
+            <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-warm-900 mb-6 leading-tight">
+                Hi, I'm Mary Jane<br class="hidden sm:block"> Andrada
+            </h1>
+            <p class="text-lg sm:text-xl text-warm-800 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Welcome to my personal page. This is where I share a bit about my life, my work, and the things I care about.
+            </p>
+            <a href="#about" class="inline-flex items-center px-8 py-4 bg-sage-700 text-white font-medium rounded-full hover:bg-sage-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Learn more
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1">
+                    <img src="assets\images\515565559_24318176877788056_6872572697004903944_n.jpg" 
+                         alt="Mary Jane cooking" 
+                         class="rounded-2xl shadow-xl w-full h-80 sm:h-96 object-cover">
+                </div>
+                <div class="order-1 md:order-2">
+                    <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-warm-900 mb-6">About Me</h2>
+                    <div class="space-y-4 text-warm-800 text-lg leading-relaxed">
+                        <p>
+                            I enjoy cooking, spending time with family, and helping people through my work. There's nothing quite like gathering around the table with loved ones over a home-cooked meal.
+                        </p>
+                        <p>
+                            This site is a simple way to connect and share what I do. Whether it's through my daily routines or special moments with family, I believe in finding joy in the simple things.
+                        </p>
+                    </div>
+                    <div class="mt-8 flex gap-4">
+                        <div class="flex items-center gap-2 text-sage-700">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="font-medium">Family First</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sage-700">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="font-medium">Helping Others</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-sage-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-warm-900 mb-4">Gallery</h2>
+                <p class="text-warm-800 text-lg">Moments from my daily life</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Family Photo -->
+                <div class="group cursor-pointer" onclick="openModal(this)">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/5]">
+                        <img src="assets\images\514336318_24316395081299569_4029747088062544692_n.jpg" 
+                             alt="Family time" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <span class="text-white font-medium">Family Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cooking/Hobby Photo -->
+                <div class="group cursor-pointer" onclick="openModal(this)">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/5]">
+                        <img src="assets\images\612152141_25956905943915133_3619335224099455838_n.jpg" 
+                             alt="Cooking" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <span class="text-white font-medium">In the Kitchen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Photo -->
+                <div class="group cursor-pointer" onclick="openModal(this)">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/5]">
+                        <img src="assets\images\597839033_25744500335155696_1119984871742345032_n.jpg" 
+                             alt="Celebration" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <span class="text-white font-medium">Celebrations</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Life Photo -->
+                <div class="group cursor-pointer sm:col-span-2 lg:col-span-1" onclick="openModal(this)">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/5]">
+                        <img src="assets\images\605632503_25852345941037801_7714747785261236115_n.jpg" 
+                             alt="Daily life" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <span class="text-white font-medium">Daily Moments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work/Help Photo -->
+                <div class="group cursor-pointer" onclick="openModal(this)">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/5]">
+                        <img src="assets\images\586414027_25527781806827551_3814697346262812471_n.jpg" 
+                             alt="Helping others" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <span class="text-white font-medium">Making a Difference</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relaxation Photo -->
+                <div class="group cursor-pointer" onclick="openModal(this)">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/5]">
+                        <img src="assets\images\573887760_25371095932496140_4977600588417601115_n.jpg" 
+                             alt="Relaxation" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <span class="text-white font-medium">Peaceful Moments</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="font-serif text-3xl sm:text-4xl font-semibold text-warm-900 mb-4">Get in Touch</h2>
+            <p class="text-warm-800 text-lg mb-12">You can reach me through the details below.</p>
+            
+            <div class="grid gap-6 sm:gap-8">
+                <!-- Phone -->
+                <a href="tel:09XXXXXXXXX" class="flex items-center justify-center sm:justify-start gap-4 p-6 bg-sage-50 rounded-2xl hover:bg-sage-100 transition-colors group">
+                    <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-700 group-hover:bg-sage-300 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-warm-800 font-medium uppercase tracking-wide">Phone</p>
+                        <p class="text-lg font-semibold text-warm-900">09XX XXX XXXX</p>
+                    </div>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:ale.maryj71@gmail.com" class="flex items-center justify-center sm:justify-start gap-4 p-6 bg-sage-50 rounded-2xl hover:bg-sage-100 transition-colors group">
+                    <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-700 group-hover:bg-sage-300 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-warm-800 font-medium uppercase tracking-wide">Email</p>
+                        <p class="text-lg font-semibold text-warm-900">ale.maryj71@gmail.com</p>
+                    </div>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/jpalejaga" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center sm:justify-start gap-4 p-6 bg-sage-50 rounded-2xl hover:bg-sage-100 transition-colors group">
+                    <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-700 group-hover:bg-sage-300 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-warm-800 font-medium uppercase tracking-wide">Facebook</p>
+                        <p class="text-lg font-semibold text-warm-900">facebook.com/jpalejaga</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-warm-100 py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-warm-800 text-sm">© 2026 Mary Jane Andrada. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 z-[60] hidden bg-black/95 backdrop-blur-sm" onclick="closeModal()">
+        <button class="absolute top-4 right-4 text-white/80 hover:text-white p-2 z-50" onclick="closeModal()">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <img id="modalImage" src="" alt="Gallery image" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Love Popup Modal -->
+    <div id="loveModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl heart-pop relative overflow-hidden" onclick="event.stopPropagation()">
+            <!-- Decorative background hearts -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+                <svg class="absolute top-4 left-4 w-8 h-8 text-sage-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <svg class="absolute bottom-4 right-4 w-12 h-12 text-sage-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            
+            <div class="relative z-10">
+                <div class="w-20 h-20 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-sage-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <h3 class="font-serif text-2xl font-semibold text-warm-900 mb-2">To my mom,</h3>
+                <p class="text-warm-800 mb-6">Hi Mi.
+                I made this site for you because I wanted to give you something that lasts. Something small, but made with care.
+                Thank you for everything you’ve done for me. For the patience. For the sacrifices I didn’t always notice. For showing up even when I didn’t deserve it.
+                I know I’ve made mistakes. I know I’ve hurt you at times, even when I didn’t mean to. I’m sorry for the times I was distant, stubborn, or careless with my words. I’m still learning, and I’m trying to do better.
+                Thank you for believing in me, even when I doubted myself. Thank you for being my support, my safety, and my home.
+                I love you.
+                Always.
+
+                — Your son 💕</p>
+                
+                <button onclick="closeLoveModal()" class="w-full py-3 bg-sage-600 text-white font-medium rounded-full hover:bg-sage-700 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar background on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        // Image Modal
+        function openModal(element) {
+            const img = element.querySelector('img');
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Love Popup Functions - Fixed
+        function showLove() {
+            const modal = document.getElementById('loveModal');
+            const heartBtn = document.getElementById('heartBtn');
+            
+            // Add heartbeat animation
+            heartBtn.classList.add('heart-animate');
+            setTimeout(() => heartBtn.classList.remove('heart-animate'), 400);
+            
+            // Show modal using flex
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeLoveModal() {
+            const modal = document.getElementById('loveModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Event listener for heart button - This is the key fix!
+        document.getElementById('heartBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            showLove();
+        });
+
+        // Close love modal when clicking outside
+        document.getElementById('loveModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoveModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeLoveModal();
+            }
+        });
+
+        // Smooth scroll for anchor links (backup for older browsers)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
